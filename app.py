@@ -171,21 +171,38 @@ def genai():
             'temperature': 0.7
         }
 
-        resp = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=20)
-        if resp.status_code == 200:
+        # -----------------------------
+        # Send request and log response
+        # -----------------------------
+        try:
+            resp = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=20)
+            print("GenAI raw response status:", resp.status_code)
+            print("GenAI raw response text:", resp.text)
+            resp.raise_for_status()  # Raise error if status != 200
+        except requests.exceptions.RequestException as e:
+            print("GenAI Request Error:", e)
+            return jsonify({'error': 'Failed to contact GenAI API.', 'details': str(e)}), 500
+
+        # -----------------------------
+        # Parse AI response safely
+        # -----------------------------
+        answer = 'AI response could not be parsed.'
+        try:
             out = resp.json()
-            try:
-                answer = out['choices'][0]['message']['content'].strip()
-            except:
-                answer = json.dumps(out)[:1000]
-            answer = answer.replace('**', '')  # remove Markdown bold
-            return jsonify({'answer': answer})
-        else:
-            return jsonify({'error': 'GenAI API error', 'details': resp.text}), 500
+            choices = out.get('choices', [])
+            if len(choices) > 0:
+                msg = choices[0].get('message', {})
+                content = msg.get('content', '')
+                if content:
+                    answer = content.replace('**', '').strip()
+        except Exception as e:
+            print("GenAI Parse Error:", e)
+
+        return jsonify({'answer': answer})
 
     except Exception as e:
-        print("Error in /genai:", str(e))
-        return jsonify({'error': str(e)}), 500
+        print("GenAI Unexpected Error:", e)
+        return jsonify({'error': 'Unexpected server error', 'details': str(e)}), 500
 
 # ----------------------------------------
 # District / Year / Data lookup
