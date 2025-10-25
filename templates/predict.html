@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ML Prediction - Child Neglect Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8f9fa; }
+    .header-title { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 0; text-align: center; }
+    .header-title h1 { font-size: 2.5rem; margin: 0; font-weight: 700; }
+    .navbar { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .navbar-brand { font-weight: 700; color: #667eea !important; }
+    .navbar-nav .nav-link { color: #333; font-weight: 500; margin: 0 15px; }
+    .navbar-nav .nav-link:hover { color: #667eea; }
+    .content-section { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
+    .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 30px; border: none; }
+    .card h2 { color: #667eea; margin-bottom: 25px; }
+    .form-label { font-weight: 600; color: #333; }
+    .btn-primary { background: #667eea; border: none; padding: 12px 30px; font-size: 1.1rem; }
+    .btn-primary:hover { background: #5568d3; }
+    .btn-secondary { background: #6c757d; border: none; padding: 8px 16px; font-size: 0.9rem; }
+    .result-box { background: #e7f3ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px; margin-top: 25px; display: none; }
+    .spinner-border { display: none; margin-left: 10px; }
+    footer { background: #333; color: white; text-align: center; padding: 30px 0; margin-top: 60px; }
+    .location-section { background: #f8f9ff; padding: 20px; border-radius: 10px; margin-bottom: 25px; border: 1px solid #e0e7ff; }
+  </style>
+</head>
+<body>
+
+  <!-- Header Title -->
+  <div class="header-title">
+    <h1>Machine Learning Prediction</h1>
+    <p class="lead">Predict Child Neglect Risk Using AI</p>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">🛡️ Child Safety</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="predict.html">ML Prediction</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Prediction Form -->
+  <div class="content-section">
+    <div class="card">
+      <h2>🤖 Enter Crime Statistics</h2>
+      <p>Select a state/district/year to auto-fill with real data, or manually enter crime statistics.</p>
+      
+      <form id="mlForm">
+        <!-- State, District, and Year Selection -->
+        <div class="location-section">
+          <h5 style="color: #667eea; margin-bottom: 15px;">📍 Select Location & Year (Optional)</h5>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">State:</label>
+              <select class="form-control" id="state" onchange="updateDistricts()">
+                <option value="">-- Select State --</option>
+                <option value="ANDHRA PRADESH">Andhra Pradesh</option>
+                <option value="ASSAM">Assam</option>
+                <option value="BIHAR">Bihar</option>
+                <option value="CHHATTISGARH">Chhattisgarh</option>
+                <option value="DELHI">Delhi</option>
+                <option value="GUJARAT">Gujarat</option>
+                <option value="HARYANA">Haryana</option>
+                <option value="HIMACHAL PRADESH">Himachal Pradesh</option>
+                <option value="JAMMU & KASHMIR">Jammu & Kashmir</option>
+                <option value="JHARKHAND">Jharkhand</option>
+                <option value="KARNATAKA">Karnataka</option>
+                <option value="KERALA">Kerala</option>
+                <option value="MADHYA PRADESH">Madhya Pradesh</option>
+                <option value="MAHARASHTRA">Maharashtra</option>
+                <option value="MANIPUR">Manipur</option>
+                <option value="MEGHALAYA">Meghalaya</option>
+                <option value="MIZORAM">Mizoram</option>
+                <option value="NAGALAND">Nagaland</option>
+                <option value="ODISHA">Odisha</option>
+                <option value="PUNJAB">Punjab</option>
+                <option value="RAJASTHAN">Rajasthan</option>
+                <option value="SIKKIM">Sikkim</option>
+                <option value="TAMIL NADU">Tamil Nadu</option>
+                <option value="TRIPURA">Tripura</option>
+                <option value="UTTAR PRADESH">Uttar Pradesh</option>
+                <option value="UTTARAKHAND">Uttarakhand</option>
+                <option value="WEST BENGAL">West Bengal</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">District:</label>
+              <select class="form-control" id="district" onchange="updateYears()">
+                <option value="">-- Select District --</option>
+              </select>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">Year:</label>
+              <select class="form-control" id="year" onchange="loadDistrictData()">
+                <option value="">-- Year --</option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3 d-flex align-items-end">
+              <button type="button" class="btn btn-secondary w-100" onclick="clearForm()">Clear Form</button>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+        <h5 style="color: #667eea; margin-bottom: 20px;">📊 Crime Statistics</h5>
+        
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Murder Cases:</label>
+            <input type="number" class="form-control" id="murder" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Rape Cases:</label>
+            <input type="number" class="form-control" id="rape" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Kidnapping Cases:</label>
+            <input type="number" class="form-control" id="kidnapping" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Foeticide Cases:</label>
+            <input type="number" class="form-control" id="foeticide" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Abetment of Suicide:</label>
+            <input type="number" class="form-control" id="abetment" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Procuration of Minor Girls:</label>
+            <input type="number" class="form-control" id="procuration" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Buying Girls for Prostitution:</label>
+            <input type="number" class="form-control" id="buying" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Selling Girls for Prostitution:</label>
+            <input type="number" class="form-control" id="selling" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Child Marriage Act Violations:</label>
+            <input type="number" class="form-control" id="child_marriage" placeholder="0" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Other Crimes:</label>
+            <input type="number" class="form-control" id="other_crimes" placeholder="0" required>
+          </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary" onclick="predictNeglect()">
+          Predict Neglect Risk
+          <span class="spinner-border spinner-border-sm" id="spinner"></span>
+        </button>
+      </form>
+
+      <!-- ML Result -->
+      <div id="mlResult" class="result-box"></div>
+    </div>
+
+    <!-- GenAI Summary -->
+    <div class="card">
+      <h2>💬 AI-Generated Summary</h2>
+      <p>After prediction, our GenAI will provide an analytical summary and recommendations.</p>
+      <div id="genaiResult" class="result-box"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Child Neglect Prediction Platform. All rights reserved.</p>
+    <p>Developed for educational and organizational purposes.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let predictionData = {};
+
+    // Update districts when state is selected
+    function updateDistricts() {
+      const state = document.getElementById('state').value;
+      const districtSelect = document.getElementById('district');
+      const yearSelect = document.getElementById('year');
+      
+      districtSelect.innerHTML = '<option value="">-- Select District --</option>';
+      yearSelect.innerHTML = '<option value="">-- Year --</option>';
+      
+      if (!state) return;
+      
+      fetch('/get_districts', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({state: state})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.districts) {
+          data.districts.forEach(district => {
+            const option = document.createElement('option');
+            option.value = district;
+            option.textContent = district;
+            districtSelect.appendChild(option);
+          });
+        }
+      })
+      .catch(err => console.error('Error loading districts:', err));
+    }
+
+    // Update years when district is selected
+    function updateYears() {
+      const state = document.getElementById('state').value;
+      const district = document.getElementById('district').value;
+      const yearSelect = document.getElementById('year');
+      
+      yearSelect.innerHTML = '<option value="">-- Year --</option>';
+      
+      if (!state || !district) return;
+      
+      fetch('/get_years', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({state: state, district: district})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.years) {
+          data.years.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+          });
+        }
+      })
+      .catch(err => console.error('Error loading years:', err));
+    }
+
+    // Load district data when year is selected
+    function loadDistrictData() {
+      const state = document.getElementById('state').value;
+      const district = document.getElementById('district').value;
+      const year = document.getElementById('year').value;
+      
+      if (!state || !district || !year) return;
+      
+      fetch('/get_district_data', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({state: state, district: district, year: year})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert('No data found for this location/year');
+          return;
+        }
+        
+        // Auto-fill form
+        document.getElementById('murder').value = data.murder || 0;
+        document.getElementById('rape').value = data.rape || 0;
+        document.getElementById('kidnapping').value = data.kidnapping || 0;
+        document.getElementById('foeticide').value = data.foeticide || 0;
+        document.getElementById('abetment').value = data.abetment || 0;
+        document.getElementById('procuration').value = data.procuration || 0;
+        document.getElementById('buying').value = data.buying || 0;
+        document.getElementById('selling').value = data.selling || 0;
+        document.getElementById('child_marriage').value = data.child_marriage || 0;
+        document.getElementById('other_crimes').value = data.other_crimes || 0;
+        
+        // Show success message
+        const resultDiv = document.getElementById('mlResult');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `<p style="color: #28a745;"><strong>✓ Data loaded for ${district}, ${state} (${year})</strong></p>`;
+        setTimeout(() => {
+          resultDiv.style.display = 'none';
+        }, 3000);
+      })
+      .catch(err => {
+        console.error('Error loading district data:', err);
+        alert('Error loading data');
+      });
+    }
+
+    // Clear form
+    function clearForm() {
+      document.getElementById('state').value = '';
+      document.getElementById('district').innerHTML = '<option value="">-- Select District --</option>';
+      document.getElementById('year').innerHTML = '<option value="">-- Year --</option>';
+      
+      const inputs = ['murder', 'rape', 'kidnapping', 'foeticide', 'abetment', 
+                     'procuration', 'buying', 'selling', 'child_marriage', 'other_crimes'];
+      inputs.forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      
+      document.getElementById('mlResult').style.display = 'none';
+      document.getElementById('genaiResult').style.display = 'none';
+    }
+
+    function predictNeglect() {
+      document.getElementById('spinner').style.display = 'inline-block';
+      
+      predictionData = {
+        murder: document.getElementById('murder').value || 0,
+        rape: document.getElementById('rape').value || 0,
+        kidnapping: document.getElementById('kidnapping').value || 0,
+        foeticide: document.getElementById('foeticide').value || 0,
+        abetment: document.getElementById('abetment').value || 0,
+        procuration: document.getElementById('procuration').value || 0,
+        buying: document.getElementById('buying').value || 0,
+        selling: document.getElementById('selling').value || 0,
+        child_marriage: document.getElementById('child_marriage').value || 0,
+        other_crimes: document.getElementById('other_crimes').value || 0
+      };
+      
+      console.log('Sending data:', predictionData);
+      
+      fetch('/predict', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(predictionData)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Server returned ' + res.status);
+        return res.json();
+      })
+      .then(result => {
+        console.log('Received result:', result);
+        document.getElementById('spinner').style.display = 'none';
+        
+        const resultDiv = document.getElementById('mlResult');
+        resultDiv.style.display = 'block';
+        
+        if (result.error) {
+          resultDiv.innerHTML = `<p class="text-danger"><strong>Error:</strong> ${result.error}</p>`;
+        } else {
+          const selectedState = document.getElementById('state').value;
+          const selectedDistrict = document.getElementById('district').value;
+          const selectedYear = document.getElementById('year').value;
+          const locationText = selectedState && selectedDistrict && selectedYear ? 
+            `<p><strong>Location:</strong> ${selectedDistrict}, ${selectedState} (${selectedYear})</p>` : '';
+          
+          resultDiv.innerHTML = `
+            <h4>Prediction Result:</h4>
+            ${locationText}
+            <p><strong>Neglect Risk:</strong> ${result.prediction || 'Unknown'}</p>
+            <p><strong>Confidence:</strong> ${result.probability || 0}%</p>
+          `;
+          
+          generateGenAISummary(result);
+        }
+      })
+      .catch(err => {
+        console.error('Fetch error:', err);
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('mlResult').innerHTML = `<p class="text-danger"><strong>Error:</strong> Could not connect to server.</p>`;
+        document.getElementById('mlResult').style.display = 'block';
+      });
+    }
+
+    function generateGenAISummary(predictionResult) {
+      const state = document.getElementById('state').value;
+      const district = document.getElementById('district').value;
+      const year = document.getElementById('year').value;
+      const locationContext = state && district && year ? `for ${district}, ${state} (${year})` : '';
+      
+      const prompt = `Based on the following crime statistics and ML prediction ${locationContext}, provide a brief analytical summary and recommendations:
+      
+Crime Data: ${JSON.stringify(predictionData)}
+Prediction: ${predictionResult.prediction}
+Confidence: ${predictionResult.probability}%
+
+Provide insights on risk factors and suggested interventions.`;
+
+      fetch('/genai', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({query: prompt})
+      })
+      .then(res => res.json())
+      .then(result => {
+        const genaiDiv = document.getElementById('genaiResult');
+        genaiDiv.style.display = 'block';
+        genaiDiv.innerHTML = `<h4>AI Analysis:</h4><p>${result.answer}</p>`;
+      })
+      .catch(err => {
+        document.getElementById('genaiResult').innerHTML = '<p class="text-danger">Error generating AI summary.</p>';
+        document.getElementById('genaiResult').style.display = 'block';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Child Neglect Prediction and Analytical Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f8f9fa; }
+    .header-title { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 0; text-align: center; }
+    .header-title h1 { font-size: 2.2rem; margin: 0; font-weight: 700; }
+    .navbar { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .navbar-brand { font-weight: 700; color: #667eea !important; }
+    .navbar-nav .nav-link { color: #333; font-weight: 500; margin: 0 15px; }
+    .navbar-nav .nav-link:hover { color: #667eea; }
+    .content-section { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .info-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 30px; }
+    .info-box h2 { color: #667eea; margin-bottom: 12px; }
+    .dashboard-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    iframe { width: 100%; min-height: 450px; border-radius: 8px; border: none; }
+    .btn-predict { background: #667eea; color: white; padding: 10px 22px; font-size: 1rem; border: none; border-radius: 8px; text-decoration: none; display: inline-block; }
+    footer { background: #333; color: white; text-align: center; padding: 20px 0; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <div class="header-title">
+    <h1>Child Neglect Prediction and Analytical Platform</h1>
+    <p class="lead">Data-Driven Insights for Child Safety</p>
+  </div>
+
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">🛡️ Child Safety</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/predict.html">ML Prediction</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="content-section">
+    <div class="info-box">
+      <h2>Why Focus on Child Neglect?</h2>
+      <p>Child neglect is one of the most common forms of child maltreatment, yet it often goes unnoticed and unreported. It occurs when a child's basic needs—such as food, shelter, education, medical care, and emotional support—are not met, leading to serious physical, psychological, and developmental harm.</p>
+      <p><strong>Key Statistics:</strong></p>
+      <ul>
+        <li>Neglect accounts for over 60% of child abuse cases globally</li>
+        <li>Children who experience neglect are at higher risk for mental health issues, substance abuse, and poor academic performance</li>
+        <li>Early detection and intervention can significantly improve outcomes for affected children</li>
+      </ul>
+      <p><strong>Our Mission:</strong> This platform leverages machine learning and data analytics to identify patterns and risk factors associated with child neglect. By analyzing crime statistics, demographic data, and historical trends, we aim to support policymakers, social workers, and child protection agencies in making informed decisions and allocating resources effectively.</p>
+    </div>
+
+    <div class="dashboard-container" id="dashboard">
+      <h2 style="color: #667eea; margin-bottom: 12px;">📊 Live Analytics Dashboard</h2>
+      <p>Explore visualizations showing child neglect trends across districts and states.</p>
+      <iframe title="dashboard of child neglect"
+        src="https://app.powerbi.com/reportEmbed?reportId=745b3e96-8a45-46b2-b1b2-b46a2a4cfd63&autoAuth=true&ctid=b5f86f36-3df0-46d1-beb7-50fa19e96f79"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="text-center" style="margin-top: 30px;">
+      <h3>Want to Predict Neglect Risk?</h3>
+      <p>Use our machine learning model to predict the likelihood of child neglect based on crime data.</p>
+      <a href="/predict.html" class="btn-predict">Go to ML Prediction →</a>
+    </div>
+
+    <div class="info-box" id="about" style="margin-top: 30px;">
+      <h2>About This Platform</h2>
+      <p>This platform combines:</p>
+      <ul>
+        <li><strong>Interactive Dashboards:</strong> Powered by Power BI for data exploration</li>
+        <li><strong>Machine Learning:</strong> XGBoost model trained on historical neglect data</li>
+        <li><strong>GenAI Integration:</strong> AI-powered summaries (optional, requires API key)</li>
+      </ul>
+      <p class="text-muted">Developed for educational and organizational purposes.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Child Neglect Prediction Platform. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
